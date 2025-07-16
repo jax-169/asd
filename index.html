@@ -2,494 +2,544 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>资本智投 - 高回报投资平台</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>武胜县小学期末考试成绩查询系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            touch-action: none;
-            -webkit-user-select: none;
-            user-select: none;
+            font-family: "Microsoft YaHei", sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            color: #fff;
-            min-height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background-color: #005bac;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%2300529e"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="%2300438a" stroke-width="1"/></svg>');
+            color: #333;
+            line-height: 1.6;
             padding: 20px;
+            min-height: 100vh;
             position: relative;
         }
         
         .container {
-            width: 100%;
-            max-width: 500px;
-            background: rgba(10, 25, 47, 0.85);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 215, 0, 0.2);
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             overflow: hidden;
-            padding: 30px 25px;
+            animation: containerAppear 0.6s ease;
+        }
+        
+        @keyframes containerAppear {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header {
+            background: linear-gradient(to right, #00529e, #0071c5);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(to right, #ffde59, #ff9d00);
+        }
+        
+        .logo {
+            position: absolute;
+            left: 25px;
+            top: 25px;
+            font-size: 45px;
+        }
+        
+        .system-title {
+            margin-top: 15px;
+            font-size: 28px;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 3px rgba(0,0,0,0.3);
             position: relative;
             z-index: 2;
         }
         
-        .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, rgba(0, 255, 170, 0.1), rgba(255, 215, 0, 0.1));
-            z-index: -1;
-            opacity: 0.2;
-        }
-        
-        .ribbon {
-            position: absolute;
-            top: 15px;
-            right: -50px;
-            background: linear-gradient(45deg, #ffd700, #ff8c00);
-            padding: 8px 60px;
-            transform: rotate(45deg);
-            font-weight: bold;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            position: relative;
-        }
-        
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-            background: linear-gradient(90deg, #ffd700, #ff8c00);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .subtitle {
+        .system-subtitle {
             font-size: 16px;
-            opacity: 0.8;
-            margin-top: 8px;
-        }
-        
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-box {
-            background: rgba(30, 55, 90, 0.6);
-            border-radius: 15px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .stat-box:nth-child(1) {
-            background: linear-gradient(45deg, rgba(0, 100, 255, 0.7), rgba(0, 200, 255, 0.4));
-        }
-        
-        .stat-box:nth-child(2) {
-            background: linear-gradient(45deg, rgba(255, 100, 0, 0.7), rgba(255, 200, 0, 0.4));
-        }
-        
-        .stat-box::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(transparent, rgba(255, 255, 255, 0.1));
-        }
-        
-        .stat-label {
-            font-size: 14px;
-            margin-bottom: 8px;
+            margin-top: 10px;
             opacity: 0.9;
-        }
-        
-        .stat-value {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ffd700;
-        }
-        
-        .timer-container {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 50px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 25px;
             position: relative;
-            overflow: hidden;
+            z-index: 2;
         }
         
-        .timer-label {
-            font-size: 18px;
-            margin-bottom: 10px;
+        .query-panel {
+            padding: 30px 30px 15px;
         }
         
-        #timer {
-            font-size: 42px;
-            font-weight: 800;
-            font-family: monospace;
-            color: #ff8c00;
+        .form-title {
+            color: #0071c5;
+            padding-bottom: 12px;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #f0f0f0;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .form-title i {
+            margin-right: 12px;
+            color: #ff9d00;
+            font-size: 28px;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px 20px;
+        }
+        
+        .form-group {
+            padding: 0 10px;
+            margin-bottom: 20px;
+            flex: 0 0 50%;
+        }
+        
+        .form-group.full {
+            flex: 0 0 100%;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+            font-size: 15px;
+        }
+        
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: #f9f9f9;
+        }
+        
+        .form-group input:focus, 
+        .form-group select:focus {
+            border-color: #0071c5;
+            outline: none;
+            box-shadow: 0 0 8px rgba(0, 113, 197, 0.3);
+            background: #fff;
+        }
+        
+        .captcha-container {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .captcha-box {
+            background: #f0f5ff;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 24px;
+            min-width: 120px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+            color: #1e5799;
             letter-spacing: 2px;
         }
         
-        .hot-opportunity {
-            background: linear-gradient(45deg, rgba(255, 0, 100, 0.9), rgba(200, 0, 255, 0.7));
-            border-radius: 15px;
-            padding: 20px;
+        .captcha-input {
+            flex: 1;
+        }
+        
+        .captcha-refresh {
+            background: #e9ecef;
+            border: 2px solid #ddd;
+            padding: 10px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 18px;
+        }
+        
+        .captcha-refresh:hover {
+            background: #d7dee8;
+            transform: rotate(90deg);
+        }
+        
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, #00529e, #0071c5);
+            color: white;
+            font-size: 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+            letter-spacing: 3px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .submit-btn:hover {
+            background: linear-gradient(to right, #004080, #00529e);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+            transform: translateY(-2px);
+            letter-spacing: 4px;
+        }
+        
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        
+        .result-panel {
+            padding: 30px;
+            display: none;
+        }
+        
+        .result-title {
             text-align: center;
-            margin-bottom: 25px;
+            color: #ff0000;
+            font-size: 32px;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 3px rgba(0,0,0,0.1);
+            animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        
+        @keyframes shake {
+            10%, 90% { transform: translateX(-1px); }
+            20%, 80% { transform: translateX(2px); }
+            30%, 50%, 70% { transform: translateX(-4px); }
+            40%, 60% { transform: translateX(4px); }
+        }
+        
+        .result-message {
+            background: #fff9f9;
+            border: 3px solid #ffcccc;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 22px;
+            line-height: 1.8;
             position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(255, 0, 100, 0.3);
+        }
+        
+        .warning-icon {
+            color: #ff0000;
+            font-size: 60px;
+            display: block;
+            text-align: center;
+            margin: 20px 0;
             animation: pulse 1.5s infinite;
         }
         
         @keyframes pulse {
-            0% { box-shadow: 0 0 15px rgba(255, 0, 100, 0.3); }
-            50% { box-shadow: 0 0 30px rgba(255, 0, 100, 0.6); }
-            100% { box-shadow: 0 0 15px rgba(255, 0, 100, 0.3); }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
         
-        .opportunity-title {
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-        }
-        
-        .opportunity-value {
-            font-size: 32px;
-            font-weight: 800;
-            margin-bottom: 15px;
-            color: #ffd700;
-        }
-        
-        .investment-input {
-            position: relative;
-            margin-bottom: 20px;
-        }
-        
-        input {
-            width: 100%;
-            padding: 18px 20px;
-            border-radius: 50px;
-            border: none;
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-            font-size: 18px;
+        .redirect {
             text-align: center;
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            outline: none;
+            margin: 25px 0;
+            font-size: 15px;
+            color: #666;
+            line-height: 1.8;
         }
         
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        #invest-btn {
-            width: 100%;
-            padding: 18px;
-            border-radius: 50px;
-            border: none;
-            background: linear-gradient(45deg, #ffd700, #ff8c00);
-            color: #000;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(255, 140, 0, 0.4);
-            position: relative;
-            overflow: hidden;
-            margin-top: 15px;
-        }
-        
-        #invest-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 140, 0, 0.6);
-        }
-        
-        #invest-btn:active {
-            transform: translateY(1px);
-        }
-        
-        .result-container {
-            display: none;
+        .footer {
+            background: #f5f5f5;
+            padding: 20px 30px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 13px;
             text-align: center;
-            padding: 30px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 20px;
-            margin-top: 20px;
         }
         
-        .result-title {
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            color: #ff5252;
-        }
-        
-        .rating {
-            font-size: 28px;
-            color: #ffd700;
-            margin: 20px 0;
-        }
-        
-        .comment {
-            font-size: 18px;
-            line-height: 1.6;
-            margin-top: 25px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
-            font-style: italic;
-        }
-        
-        .floating-coins {
-            position: absolute;
-            font-size: 24px;
-            animation: float 15s linear infinite;
-            opacity: 0.2;
-            z-index: 1;
-        }
-        
-        @keyframes float {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(100px, 200px) rotate(360deg); }
-        }
-        
-        .footer-text {
-            text-align: center;
-            margin-top: 25px;
+        .copyright {
+            margin-top: 10px;
             font-size: 12px;
-            opacity: 0.5;
         }
         
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #ffd700;
-            opacity: 0;
+        .education-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .education-links a {
+            color: #0071c5;
+            text-decoration: none;
+            transition: color 0.3s;
+            white-space: nowrap;
+        }
+        
+        .education-links a:hover {
+            color: #e53935;
+            text-decoration: underline;
+        }
+        
+        .countdown {
+            font-weight: bold;
+            font-size: 20px;
+            color: #e53935;
         }
     </style>
 </head>
 <body>
-    <div class="ribbon">限时机会</div>
-    
     <div class="container">
-        <div class="overlay"></div>
-        
-        <header>
-            <h1>资本智投</h1>
-            <p class="subtitle">AI驱动的量化投资平台 | 智能合约保证 | 每日稳定收益</p>
-        </header>
-        
-        <div class="stats-container">
-            <div class="stat-box">
-                <div class="stat-label">今日平均收益</div>
-                <div class="stat-value">+7.5%</div>
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
             </div>
-            <div class="stat-box">
-                <div class="stat-label">本月最高收益</div>
-                <div class="stat-value">+248%</div>
+            <h1 class="system-title">武胜县2024年小学期末考试成绩查询系统</h1>
+            <p class="system-subtitle">武胜县教育局主办 - 成绩查询唯一指定平台</p>
+        </div>
+        
+        <div class="query-panel" id="queryPanel">
+            <h2 class="form-title"><i class="fas fa-search"></i>学生成绩信息查询</h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">学生姓名：</label>
+                    <input type="text" id="name" placeholder="请输入学生姓名">
+                </div>
+                
+                <div class="form-group">
+                    <label for="student-id">学籍号：</label>
+                    <input type="text" id="student-id" placeholder="请输入10位学籍号">
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="school">所在学校：</label>
+                    <select id="school">
+                        <option value="yankou" selected>沿口小学</option>
+                        <option value="minzu">民族小学</option>
+                        <option value="longnvhu">龙女湖小学</option>
+                        <option value="jialing">嘉陵小学</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="grade">年级：</label>
+                    <select id="grade">
+                        <option value="">请选择年级</option>
+                        <option value="1">一年级</option>
+                        <option value="2">二年级</option>
+                        <option value="3">三年级</option>
+                        <option value="4">四年级</option>
+                        <option value="5">五年级</option>
+                        <option value="6">六年级</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group full" id="classContainer">
+                    <label for="class">班级：</label>
+                    <select id="class">
+                        <option value="">请先选择年级</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group full">
+                <div class="captcha-container">
+                    <div class="captcha-box" id="captcha">5 + 3 = ?</div>
+                    <input type="text" class="captcha-input" id="captcha-input" placeholder="请输入计算结果">
+                    <button class="captcha-refresh" id="refresh-captcha">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-group full">
+                <div style="background: #e6f3ff; border-left: 4px solid #0071c5; padding: 12px; margin: 15px 0; font-size: 14px;">
+                    <i class="fas fa-info-circle" style="color: #0071c5;"></i>
+                    提示：本系统仅提供本次期末考试成绩查询，最终成绩以学校通知为准
+                </div>
+            </div>
+            
+            <button class="submit-btn" id="submit-btn">
+                <i class="fas fa-check-circle"></i> 立即查询成绩
+            </button>
+        </div>
+        
+        <div class="result-panel" id="resultPanel">
+            <div class="warning-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h2 class="result-title">恭喜你被骗啦！</h2>
+            
+            <div class="result-message">
+                <p>中国反诈中心提示您，陌生链接不要点，千万不要相信第三方渠道的查分结果</p>
+                <p>暑假已经开始，祝你假期愉快！</p>
+            </div>
+            
+            <div class="redirect">
+                <p>页面将在 <span id="countdown" class="countdown">5</span> 秒后关闭</p>
+                <p>本系统仅供娱乐，请勿当真</p>
             </div>
         </div>
         
-        <div class="timer-container">
-            <div class="timer-label">本轮投资窗口倒计时</div>
-            <div id="timer">00:15</div>
-        </div>
-        
-        <div class="hot-opportunity">
-            <div class="opportunity-title">🔥 绝佳投资机会 🔥</div>
-            <div class="opportunity-value" id="projected-return">回报率 +9.8%</div>
-            <p>智能AI检测到短期市场波动套利机会</p>
-        </div>
-        
-        <div class="investment-input">
-            <input type="text" id="investment" placeholder="输入投资金额 (最小1000元)" value="1000">
-        </div>
-        
-        <button id="invest-btn">立即投资</button>
-        
-        <div id="result-container" class="result-container">
-            <div class="result-title">投资结果分析</div>
-            <div class="rating">您的韭菜指数: 🌱🌱🌱🌱🌱 (五星满分)</div>
-            <div class="comment">
-                <p>根据行为分析系统AI-9000评估:</p>
-                <p>您对高风险高回报投资建议的反应时间为 0.8 秒</p>
-                <p>平均受骗可能性: 99.87%</p>
-                <p>"聪明的投资者研究风险，贪婪的投资者只看回报"</p>
-                <p>温馨提示: 您刚刚浪费的时间永远无法收回</p>
+        <div class="footer">
+            <div class="education-links">
+                <a href="#">武胜县人民政府官网</a>
+                <a href="#">武胜县教育局</a>
+                <a href="#">四川省教育考试院</a>
+                <a href="#">武胜教育资源平台</a>
+                <a href="#">学籍管理系统入口</a>
             </div>
-        </div>
-        
-        <div class="footer-text">
-            * 资本市场有风险，投资需谨慎。本平台不构成任何投资建议。
+            <div class="copyright">
+                © 2024 武胜县教育局 版权所有 | 技术支持：武胜县教育信息中心
+                <br>
+                地址：武胜县沿口镇东街38号 | 电话：0826-6211000
+            </div>
         </div>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const timerElement = document.getElementById('timer');
-            const investButton = document.getElementById('invest-btn');
-            const resultContainer = document.getElementById('result-container');
-            const investmentInput = document.getElementById('investment');
-            const projectedReturn = document.getElementById('projected-return');
+            // 获取DOM元素
+            const schoolSelect = document.getElementById('school');
+            const gradeSelect = document.getElementById('grade');
+            const classSelect = document.getElementById('class');
+            const captchaBox = document.getElementById('captcha');
+            const captchaInput = document.getElementById('captcha-input');
+            const refreshBtn = document.getElementById('refresh-captcha');
+            const submitBtn = document.getElementById('submit-btn');
+            const queryPanel = document.getElementById('queryPanel');
+            const resultPanel = document.getElementById('resultPanel');
+            const countdownEl = document.getElementById('countdown');
             
-            let timer;
-            let seconds = 15;
-            
-            // 初始生成随机收益率
-            updateProjectedReturn();
-            
-            // 启动倒计时
-            startTimer();
-            
-            // 更新投资回报率显示
-            function updateProjectedReturn() {
-                const returnValue = (Math.random() * 5 + 7).toFixed(1);
-                projectedReturn.textContent = `回报率 +${returnValue}%`;
+            // 生成随机计算题验证码
+            function generateCaptcha() {
+                const num1 = Math.floor(Math.random() * 9) + 1;
+                const num2 = Math.floor(Math.random() * 9) + 1;
+                const operator = ['+', '-', '×'][Math.floor(Math.random() * 3)];
+                
+                let answer;
+                if (operator === '+') {
+                    answer = num1 + num2;
+                } else if (operator === '-') {
+                    answer = num1 - num2;
+                } else {
+                    answer = num1 * num2;
+                }
+                
+                captchaBox.dataset.answer = answer;
+                captchaBox.textContent = `${num1} ${operator} ${num2} = ?`;
             }
             
-            // 开始倒计时
-            function startTimer() {
-                timer = setInterval(() => {
-                    seconds--;
-                    timerElement.textContent = `00:${seconds.toString().padStart(2, '0')}`;
+            // 根据选择的年级生成班级选项
+            function generateClasses() {
+                const grade = gradeSelect.value;
+                if (!grade) return;
+                
+                classSelect.innerHTML = '';
+                
+                // 随机班级数量（18-25之间）
+                const classCount = Math.floor(Math.random() * 8) + 18;
+                
+                for (let i = 1; i <= classCount; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = `${i}班`;
+                    classSelect.appendChild(option);
+                }
+            }
+            
+            // 初始化页面
+            generateCaptcha();
+            
+            // 年级选择事件监听
+            gradeSelect.addEventListener('change', generateClasses);
+            
+            // 刷新验证码
+            refreshBtn.addEventListener('click', generateCaptcha);
+            
+            // 提交按钮事件
+            submitBtn.addEventListener('click', function() {
+                const name = document.getElementById('name').value.trim();
+                const studentId = document.getElementById('student-id').value.trim();
+                const school = schoolSelect.value;
+                const grade = gradeSelect.value;
+                const cls = classSelect.value;
+                const userAnswer = parseInt(captchaInput.value.trim());
+                const correctAnswer = parseInt(captchaBox.dataset.answer);
+                
+                // 简单验证
+                if (!name) {
+                    alert('请输入学生姓名！');
+                    return;
+                }
+                
+                if (!studentId || studentId.length !== 10) {
+                    alert('请输入10位有效学籍号！');
+                    return;
+                }
+                
+                if (!grade) {
+                    alert('请选择年级！');
+                    return;
+                }
+                
+                if (!cls) {
+                    alert('请选择班级！');
+                    return;
+                }
+                
+                if (userAnswer !== correctAnswer) {
+                    alert('验证码计算错误，请重新输入！');
+                    generateCaptcha();
+                    return;
+                }
+                
+                // 切换到结果面板
+                queryPanel.style.display = 'none';
+                resultPanel.style.display = 'block';
+                
+                // 倒计时
+                let count = 5;
+                countdownEl.textContent = count;
+                
+                const countdownInterval = setInterval(() => {
+                    count--;
+                    countdownEl.textContent = count;
                     
-                    // 每5秒更新一次投资回报率
-                    if(seconds % 5 === 0) {
-                        updateProjectedReturn();
-                    }
-                    
-                    // 当倒计时结束时结束游戏
-                    if(seconds <= 0) {
-                        clearInterval(timer);
-                        endGame();
+                    if (count <= 0) {
+                        clearInterval(countdownInterval);
+                        // 创建关闭动画
+                        document.querySelector('.container').style.animation = 'containerAppear 0.6s reverse forwards';
+                        setTimeout(() => {
+                            alert('系统已关闭！祝大家暑假愉快！');
+                        }, 500);
                     }
                 }, 1000);
-            }
-            
-            // 投资按钮点击处理
-            investButton.addEventListener('click', function() {
-                // 显示一点视觉反馈
-                this.textContent = "交易处理中...";
-                this.style.background = "linear-gradient(45deg, #00c853, #009624)";
-                
-                // 添加金币动画效果
-                createConfetti();
-                
-                // 延迟后结束游戏
-                setTimeout(() => {
-                    endGame();
-                }, 500);
             });
-            
-            // 输入框点击时自动选中全部文本
-            investmentInput.addEventListener('click', function() {
-                this.select();
-            });
-            
-            // 结束游戏并显示嘲讽信息
-            function endGame() {
-                clearInterval(timer);
-                
-                // 隐藏按钮和输入框
-                investButton.style.display = "none";
-                investmentInput.style.display = "none";
-                document.querySelector('.hot-opportunity').style.display = "none";
-                
-                // 显示结果
-                resultContainer.style.display = "block";
-                
-                // 添加动画效果
-                gsap.from(".result-title", {
-                    duration: 1, 
-                    y: 50, 
-                    opacity: 0, 
-                    ease: "back.out(1.7)"
-                });
-                
-                gsap.from(".rating", {
-                    duration: 0.8, 
-                    delay: 0.5, 
-                    scale: 0.5, 
-                    opacity: 0, 
-                    ease: "elastic.out(1, 0.5)"
-                });
-            }
-            
-            // 创建彩花效果
-            function createConfetti() {
-                const colors = ['#ffd700', '#ff8c00', '#00b7ff', '#ff5252'];
-                
-                for(let i = 0; i < 50; i++) {
-                    const confetti = document.createElement('div');
-                    confetti.className = 'confetti';
-                    confetti.style.left = `${Math.random() * 100}%`;
-                    confetti.style.top = '0';
-                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.opacity = '1';
-                    document.body.appendChild(confetti);
-                    
-                    // 随机动画
-                    const duration = 1 + Math.random() * 2;
-                    const horizontal = (Math.random() - 0.5) * 400;
-                    
-                    gsap.to(confetti, {
-                        duration: duration,
-                        y: window.innerHeight,
-                        x: horizontal,
-                        rotation: Math.random() * 360,
-                        opacity: 0,
-                        ease: "power2.out",
-                        onComplete: () => confetti.remove()
-                    });
-                }
-            }
-            
-            // 创建一些浮动背景元素
-            function createFloatingElements() {
-                const symbols = ['💰', '📈', '💹', '💲', '🚀'];
-                
-                for(let i = 0; i < 15; i++) {
-                    const coin = document.createElement('div');
-                    coin.className = 'floating-coins';
-                    coin.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
-                    coin.style.left = `${Math.random() * 100}%`;
-                    coin.style.top = `${Math.random() * 100}%`;
-                    coin.style.fontSize = `${Math.random() * 20 + 15}px`;
-                    coin.style.animationDuration = `${Math.random() * 20 + 10}s`;
-                    document.body.appendChild(coin);
-                }
-            }
-            
-            createFloatingElements();
         });
     </script>
 </body>
